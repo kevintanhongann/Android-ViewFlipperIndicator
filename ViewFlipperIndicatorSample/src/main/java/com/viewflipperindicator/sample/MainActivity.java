@@ -46,10 +46,6 @@ public class MainActivity extends Activity {
         return true;
     }
 
-
-    /**
-     * class for setting gestures for the viewflipper for categories view
-     */
     class CustomGestureListener extends GestureDetector.SimpleOnGestureListener {
 
         ViewFlipper viewFlipper;
