@@ -1,4 +1,9 @@
-Copyright [yyyy] [name of copyright owner]
+This is a port of Jake Wharton's ViewPagerIndicator to a ViewFlipper's implementation. Borrowed a bit of his theming codes, because I don't know much about styling.
+
+
+
+
+Copyright 2013 Kevin Tan
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
