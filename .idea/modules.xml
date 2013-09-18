@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ViewFlipperIndicator/ViewFlipperIndicator.iml" filepath="$PROJECT_DIR$/ViewFlipperIndicator/ViewFlipperIndicator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ViewFlipperIndicatorProject.iml" filepath="$PROJECT_DIR$/ViewFlipperIndicatorProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ViewFlipperIndicatorSample/ViewFlipperIndicatorSample.iml" filepath="$PROJECT_DIR$/ViewFlipperIndicatorSample/ViewFlipperIndicatorSample.iml" />
+    </modules>
+  </component>
+</project>
+
