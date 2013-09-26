@@ -1,7 +1,7 @@
 package com.viewflipperindicator.sample;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -10,9 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ViewFlipper;
 import com.kevintan.viewflipperindicator.UnderlinePageIndicator;
-import java.util.List;
 
-public class MainActivity extends Activity {
+public class UnderlineActivity extends Activity {
 
     private ViewFlipper viewFlipper;
     private UnderlinePageIndicator viewFlipperIndicator;
@@ -25,9 +24,10 @@ public class MainActivity extends Activity {
         viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
         viewFlipperIndicator = (UnderlinePageIndicator) findViewById(R.id.viewFlipperIndicator);
         viewFlipperIndicator.setViewFlipper(viewFlipper);
+        viewFlipperIndicator.setFades(false);
 
         //FIXME by right I shouldnt have to manually assign a color since I've assigned a style with proper values
-        viewFlipperIndicator.setSelectedColor(getResources().getColor(R.color.dark_red));
+        //viewFlipperIndicator.setSelectedColor(getResources().getColor(R.color.dark_red));
         final GestureDetector gestureDetector = new GestureDetector(this, new CustomGestureListener(viewFlipper, viewFlipperIndicator));
 
         viewFlipper.setOnTouchListener(new View.OnTouchListener() {

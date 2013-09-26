@@ -9,8 +9,10 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.ViewFlipper;
@@ -18,7 +20,7 @@ import android.widget.ViewFlipper;
 /**
  * Created by kevintan on 9/11/13.
  */
-public class UnderlinePageIndicator extends View {
+public class UnderlinePageIndicator extends View implements PageIndicator{
 
     private int mTouchSlop;
     ViewFlipper viewFlipper;
@@ -28,15 +30,18 @@ public class UnderlinePageIndicator extends View {
     private int mFadeLength;
     private int mFadeBy;
     private static final int FADE_FRAME_MS = 30;
-
     int currentDisplayedChild;
+    private static final int INVALID_POINTER = -1;
+    private float mLastMotionX = -1;
+    private int mActivePointerId = INVALID_POINTER;
+    private boolean mIsDragging;
 
     public UnderlinePageIndicator(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public UnderlinePageIndicator(Context context, AttributeSet attrs) {
-        super(context, attrs, R.attr.vfiUnderlinePageIndicatorStyle);
+        this(context, attrs, R.attr.vfiUnderlinePageIndicatorStyle);
     }
 
     public UnderlinePageIndicator(Context context, AttributeSet attrs, int defStyle) {
@@ -130,6 +135,7 @@ public class UnderlinePageIndicator extends View {
         }
     };
 
+    @Override
     public void setViewFlipper(ViewFlipper viewFlipper) {
         this.viewFlipper = viewFlipper;
     }
@@ -199,5 +205,89 @@ public class UnderlinePageIndicator extends View {
                 return new SavedState[size];
             }
         };
+    }
+
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (super.onTouchEvent(ev)) {
+            return true;
+        }
+        if ((viewFlipper == null) || (viewFlipper.getChildCount() == 0)) {
+            return false;
+        }
+
+
+        final int action = ev.getAction() & MotionEventCompat.ACTION_MASK;
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                mLastMotionX = ev.getX();
+                break;
+
+            case MotionEvent.ACTION_MOVE: {
+                final int activePointerIndex = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
+                final float x = MotionEventCompat.getX(ev, activePointerIndex);
+                final float deltaX = x - mLastMotionX;
+
+                if (!mIsDragging) {
+                    if (Math.abs(deltaX) > mTouchSlop) {
+                        mIsDragging = true;
+                    }
+                }
+
+                if (mIsDragging) {
+                    mLastMotionX = x;
+                    /*if (mViewPager.isFakeDragging() || mViewPager.beginFakeDrag()) {
+                        mViewPager.fakeDragBy(deltaX);
+                    }*/
+                }
+
+                break;
+            }
+
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
+                if (!mIsDragging) {
+                    final int count = viewFlipper.getChildCount();
+                    final int width = getWidth();
+                    final float halfWidth = width / 2f;
+                    final float sixthWidth = width / 6f;
+
+                   /* if ((mCurrentPage > 0) && (ev.getX() < halfWidth - sixthWidth)) {
+                        if (action != MotionEvent.ACTION_CANCEL) {
+                            mViewPager.setCurrentItem(mCurrentPage - 1);
+                        }
+                        return true;
+                    } else if ((mCurrentPage < count - 1) && (ev.getX() > halfWidth + sixthWidth)) {
+                        if (action != MotionEvent.ACTION_CANCEL) {
+                            mViewPager.setCurrentItem(mCurrentPage + 1);
+                        }
+                        return true;
+                    }*/
+                }
+
+                mIsDragging = false;
+                mActivePointerId = INVALID_POINTER;
+                //if (mViewPager.isFakeDragging()) mViewPager.endFakeDrag();
+                break;
+
+            case MotionEventCompat.ACTION_POINTER_DOWN: {
+                final int index = MotionEventCompat.getActionIndex(ev);
+                mLastMotionX = MotionEventCompat.getX(ev, index);
+                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+                break;
+            }
+
+            case MotionEventCompat.ACTION_POINTER_UP:
+                final int pointerIndex = MotionEventCompat.getActionIndex(ev);
+                final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
+                if (pointerId == mActivePointerId) {
+                    final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+                    mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
+                }
+                mLastMotionX = MotionEventCompat.getX(ev, MotionEventCompat.findPointerIndex(ev, mActivePointerId));
+                break;
+        }
+
+        return true;
     }
 }
