@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ViewFlipper
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/viewFlipper"
+        android:clickable="true"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:text="Test 1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:text="Test 2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:text="Test 3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:text="Test 4" />
+
+    </ViewFlipper>
+
+    <com.kevintan.viewflipperindicator.CirclePageIndicator
+        android:id="@+id/circlePageIndicator"
+        android:padding="10dip"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:background="#FFCCCCCC"
+        app:radius="10dp"
+        app:fillColor="#FF888888"
+        app:pageColor="#88FF0000"
+        app:strokeColor="#FF000000"
+        app:strokeWidth="5dp"
+        />
+</LinearLayout>
